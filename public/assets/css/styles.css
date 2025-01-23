@@ -2,8 +2,14 @@
   display: grid;
   grid-template-columns: repeat(4, 1fr);
   gap: 8px;
+  max-width: 900px;
 }
 
 .card-label {
   background-color: lightgrey;
+  padding: 16px;
+}
+
+.lightseagreen {
+  background-color: lightseagreen;
 }
