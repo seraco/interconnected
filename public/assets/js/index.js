@@ -17,19 +17,25 @@ const solution = {
   sixteenth: "hardest",
 };
 
-const selected = [];
+function getCards() {
+  return document.querySelectorAll(".card-label");
+}
+
+function updateCardsBackground() {}
 
 function inputHandler(e) {
   console.log("Fired", e);
   const parent = e.target.parentElement;
-  if (parent.classList.contains("lightseagreen")) {
-    e.target.parentElement.classList.remove("lightseagreen");
+  const checked = e.target.checked;
+  if (!checked) {
+    parent.classList.remove("lightseagreen");
     return;
   }
-  e.target.parentElement.classList.add("lightseagreen");
+  parent.classList.add("lightseagreen");
 }
 
-const cards = document.querySelectorAll(".card-label");
-cards.forEach((element) => {
-  element.firstChild.addEventListener("input", inputHandler);
+getCards().forEach((element) => {
+  const child = element.firstChild;
+  if (child.checked) element.classList.add("lightseagreen");
+  child.addEventListener("input", inputHandler);
 });
