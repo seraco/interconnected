@@ -1,4 +1,8 @@
-.cards-container {
+html {
+  font-family: sans-serif;
+}
+
+#board {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
   gap: 8px;
@@ -8,8 +12,24 @@
 .card-label {
   background-color: lightgrey;
   padding: 16px;
+  font-weight: bold;
 }
 
-.lightseagreen {
-  background-color: lightseagreen;
+.card-label > input {
+  position: absolute;
+  opacity: 0;
+}
+
+.card-label,
+.card-label > input {
+  cursor: pointer;
+}
+
+.card-label:focus-within {
+  outline: 2px solid lightseagreen;
+}
+
+.selected {
+  background-color: dimgray;
+  color: white;
 }
