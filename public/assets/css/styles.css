@@ -29,7 +29,28 @@ html {
   outline: 2px solid lightseagreen;
 }
 
+label:has(input:disabled),
+input:disabled {
+  cursor: default;
+}
+
 .selected {
   background-color: dimgray;
   color: white;
+}
+
+.easy {
+  background-color: #b0d9b1;
+}
+
+.medium {
+  background-color: #f4b183;
+}
+
+.hard {
+  background-color: #a4c8e1;
+}
+
+.hardest {
+  background-color: #d4a5c6;
 }

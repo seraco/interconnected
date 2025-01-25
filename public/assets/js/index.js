@@ -17,7 +17,9 @@ const solution = {
   sixteenth: "hardest",
 };
 
-function getCardsContainer() {
+let totalCompletedCards = 0;
+
+function getBoard() {
   return document.getElementById("board");
 }
 
@@ -31,7 +33,7 @@ function getSelectedCards() {
 
 getSelectedCards().forEach((card) => card.classList.add("selected"));
 
-getCardsContainer().addEventListener("input", inputHandler);
+getBoard().addEventListener("input", inputHandler);
 
 function handleSelected(input) {
   const card = input.parentNode;
@@ -53,21 +55,41 @@ function isWinningState() {
   return areSameDifficulty && selectedCards.length === 4;
 }
 
-function updateBoardAfterWinningMove() {
-  const firstFourCards = getCards().slice(0, 4);
-  const selectedCards = getSelectedCards();
-  firstFourCards.forEach((card, idx) => {
-    const sibling = selectedCards[idx].nextSibling;
-    card.replaceWith(selectedCards[idx]);
+function swapWinningCards() {
+  const unselected = getCards()
+    .slice(totalCompletedCards, totalCompletedCards + 4)
+    .filter((card) => !card.firstChild.checked);
+  const selected = getCards().filter(
+    (card, idx) => card.firstChild.checked && idx >= totalCompletedCards + 4
+  );
+  unselected.forEach((card, idx) => {
+    const sibling = selected[idx].nextSibling;
+    card.replaceWith(selected[idx]);
     sibling.parentNode.insertBefore(card, sibling);
   });
 }
 
+function updateWinningCards() {
+  getCards()
+    .slice(totalCompletedCards, totalCompletedCards + 4)
+    .forEach((card) => {
+      card.firstChild.checked = false;
+      card.classList.remove("selected");
+      const value = card.firstChild.value.toLowerCase();
+      card.classList.add(solution[value]);
+      card.firstChild.disabled = true;
+    });
+  totalCompletedCards += 4;
+}
+
+function updateBoardAfterWinningMove() {
+  swapWinningCards();
+  updateWinningCards();
+}
+
 function inputHandler(e) {
-  console.log("Fired", e);
   handleSelected(e.target);
   if (isWinningState()) {
-    console.log(isWinningState());
     updateBoardAfterWinningMove();
   }
 }
