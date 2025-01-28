@@ -31,6 +31,10 @@ function getSubmitButton() {
   return document.getElementById("submit-button");
 }
 
+function getDeselectButton() {
+  return document.getElementById("deselect-button");
+}
+
 function getSelectedCards() {
   return getCards().filter((card) => card.firstChild.checked);
 }
@@ -40,6 +44,8 @@ getSelectedCards().forEach((card) => card.classList.add("selected"));
 getBoard().addEventListener("input", inputHandler);
 
 getSubmitButton().addEventListener("click", submitHandler);
+
+getDeselectButton().addEventListener("click", deselectHandler);
 
 function handleSelected(input) {
   const card = input.parentNode;
@@ -116,9 +122,23 @@ function disableSubmitButton() {
   getSubmitButton().disabled = true;
 }
 
+function enableDeselectButton() {
+  getDeselectButton().disabled = false;
+}
+
+function disableDeselectButton() {
+  getDeselectButton().disabled = true;
+}
+
 function inputHandler(e) {
   handleSelected(e.target);
-  if (getSelectedCards().length < 4) {
+  const selectedLength = getSelectedCards().length;
+  if (selectedLength > 0) {
+    enableDeselectButton();
+  } else {
+    disableDeselectButton();
+  }
+  if (selectedLength < 4) {
     enableUnselectedCards();
     disableSubmitButton();
     return;
@@ -133,5 +153,18 @@ function submitHandler(e) {
     updateBoardAfterWinningMove();
     enableUnselectedCards();
     disableSubmitButton();
+    disableDeselectButton();
   }
+}
+
+function deselectAllCards() {
+  console.log("here");
+  getSelectedCards().forEach((card) => {
+    card.firstChild.checked = false;
+    card.classList.remove("selected");
+  });
+}
+
+function deselectHandler() {
+  deselectAllCards();
 }
