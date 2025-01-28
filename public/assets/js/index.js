@@ -55,6 +55,16 @@ function isWinningState() {
   return areSameDifficulty && selectedCards.length === 4;
 }
 
+function disableTooManyCards() {
+  const unselected = getCards().filter((card) => !card.firstChild.checked);
+  unselected.forEach((card) => (card.firstChild.disabled = true));
+}
+
+function enableUnselectedCards() {
+  const unselected = getCards().filter((card) => !card.firstChild.checked);
+  unselected.forEach((card) => (card.firstChild.disabled = false));
+}
+
 function swapWinningCards() {
   const unselected = getCards()
     .slice(totalCompletedCards, totalCompletedCards + 4)
@@ -89,6 +99,11 @@ function updateBoardAfterWinningMove() {
 
 function inputHandler(e) {
   handleSelected(e.target);
+  if (getSelectedCards().length < 4) {
+    enableUnselectedCards();
+    return;
+  }
+  disableTooManyCards();
   if (isWinningState()) {
     updateBoardAfterWinningMove();
   }
