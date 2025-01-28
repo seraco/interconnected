@@ -61,7 +61,12 @@ function disableTooManyCards() {
 }
 
 function enableUnselectedCards() {
-  const unselected = getCards().filter((card) => !card.firstChild.checked);
+  const unselected = getCards().filter((card) => {
+    const value = card.firstChild.value.toLowerCase();
+    return (
+      !card.firstChild.checked && !card.classList.contains(solution[value])
+    );
+  });
   unselected.forEach((card) => (card.firstChild.disabled = false));
 }
 
@@ -106,5 +111,6 @@ function inputHandler(e) {
   disableTooManyCards();
   if (isWinningState()) {
     updateBoardAfterWinningMove();
+    enableUnselectedCards();
   }
 }
