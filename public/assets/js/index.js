@@ -27,6 +27,10 @@ function getCards() {
   return Array.from(document.querySelectorAll(".card-label"));
 }
 
+function getSubmitButton() {
+  return document.getElementById("submit-button");
+}
+
 function getSelectedCards() {
   return getCards().filter((card) => card.firstChild.checked);
 }
@@ -34,6 +38,8 @@ function getSelectedCards() {
 getSelectedCards().forEach((card) => card.classList.add("selected"));
 
 getBoard().addEventListener("input", inputHandler);
+
+getSubmitButton().addEventListener("click", submitHandler);
 
 function handleSelected(input) {
   const card = input.parentNode;
@@ -102,15 +108,30 @@ function updateBoardAfterWinningMove() {
   updateWinningCards();
 }
 
+function enableSubmitButton() {
+  getSubmitButton().disabled = false;
+}
+
+function disableSubmitButton() {
+  getSubmitButton().disabled = true;
+}
+
 function inputHandler(e) {
   handleSelected(e.target);
   if (getSelectedCards().length < 4) {
     enableUnselectedCards();
+    disableSubmitButton();
     return;
   }
   disableTooManyCards();
+  enableSubmitButton();
+}
+
+function submitHandler(e) {
+  e.preventDefault();
   if (isWinningState()) {
     updateBoardAfterWinningMove();
     enableUnselectedCards();
+    disableSubmitButton();
   }
 }
