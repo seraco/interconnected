@@ -158,7 +158,6 @@ function submitHandler(e) {
 }
 
 function deselectAllCards() {
-  console.log("here");
   getSelectedCards().forEach((card) => {
     card.firstChild.checked = false;
     card.classList.remove("selected");
